@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="498.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.read.reader.ControllerMain">
+<AnchorPane prefHeight="486.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.read.reader.ControllerMain">
    <children>
-      <TableView layoutX="59.0" layoutY="46.0" prefHeight="370.0" prefWidth="509.0">
+      <TableView layoutX="14.0" layoutY="14.0" prefHeight="370.0" prefWidth="509.0">
         <columns>
           <TableColumn prefWidth="178.0" text="Название" />
             <TableColumn prefWidth="330.0" text="Автор." />

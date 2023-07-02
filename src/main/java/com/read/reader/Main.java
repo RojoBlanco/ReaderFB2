@@ -26,15 +26,6 @@ public class Main extends Application {
 
     public static void main(String[] args) throws SQLException, IOException
     {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:D:\\SQLite\\books.db");
-            System.out.println("Подключилось");
-            launch();
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-
+    launch(args);
     }
 }

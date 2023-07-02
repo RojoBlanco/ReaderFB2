@@ -7,9 +7,7 @@ import static java.nio.file.Files.copy;
 
 
 public class Reader  {
-
     private static String FBFile;
-    public static String  Title, Body,Binary;
     private static File TempDir, TmpFile;
 
 
