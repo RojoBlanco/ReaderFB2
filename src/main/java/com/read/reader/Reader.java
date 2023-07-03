@@ -16,8 +16,6 @@ public class Reader  {
     {
         FBFile = Path;
         createTempFolder();
-        String Proverka =  readText(TmpFile);
-
     }
     // Копируем файл во временную папку в формате txt
     private static void copyFile(File FB, File txt)
@@ -45,19 +43,6 @@ public class Reader  {
         }
         delDir.delete();
     }
-    private static String readText(File filePath){
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                new FileInputStream(filePath)))) {
-            StringBuilder builder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line).append("\n");
-            }
-            return builder.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
 }
 

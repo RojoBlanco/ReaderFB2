@@ -6,26 +6,53 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.File;
-
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 public class Main extends Application {
+    private Stage primaryStage;
+
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        stage.setTitle("Библиотека");
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.setTitle("Библиотека");
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
     }
 
-    public static void main(String[] args) throws SQLException, IOException
+    public Stage getPrimaryStage(){
+        return this.primaryStage;
+    }
+    public static void main(String[] args) throws IOException
     {
-    launch(args);
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        OpenHandler handler = new OpenHandler();
+        SAXParser parser = null;
+
+        try {
+            parser = factory.newSAXParser();
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        File book = new File("C:/Books/Test.fb2");
+
+        try {
+            parser.parse(book, handler);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        }
+
+        launch(args);
     }
 }
