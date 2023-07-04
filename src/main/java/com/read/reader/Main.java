@@ -1,5 +1,6 @@
 package com.read.reader;
 
+import FB2Format.Book_Info;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -7,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.xml.sax.SAXException;
 
@@ -16,7 +18,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 public class Main extends Application {
     private Stage primaryStage;
-
+    private ArrayList<Book_Info> descriptions;
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Main.fxml"));
