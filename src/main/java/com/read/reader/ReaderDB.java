@@ -25,10 +25,8 @@ public class ReaderDB {
             System.out.println("База данных уже подключена");
         }
     }
-    public static void Add(Book book){
 
 
-    }
     public static void Close() throws SQLException {
         connection.close();
     }
