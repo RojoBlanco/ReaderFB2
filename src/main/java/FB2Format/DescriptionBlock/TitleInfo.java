@@ -4,7 +4,7 @@ import java.util.List;
 
 import FB2Format.Image;
 
-public class SrcTitleInfo {
+public class TitleInfo {
 	//Авторы
     private List<Author> authors;
     //Дата написания книги
