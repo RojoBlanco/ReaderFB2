@@ -32,27 +32,6 @@ public class Main extends Application {
     }
     public static void main(String[] args) throws IOException
     {
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        OpenHandler handler = new OpenHandler();
-        SAXParser parser = null;
-
-        try {
-            parser = factory.newSAXParser();
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        } catch (SAXException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        File book = new File("C:/Books/Test.fb2");
-
-        try {
-            parser.parse(book, handler);
-        } catch (SAXException e) {
-            throw new RuntimeException(e);
-        }
-
         launch(args);
     }
 }

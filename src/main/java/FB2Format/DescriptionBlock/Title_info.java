@@ -1,4 +1,4 @@
-package FB2Format;
+package FB2Format.DescriptionBlock;
 
 import java.util.ArrayList;
 
