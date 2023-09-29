@@ -1,4 +1,4 @@
-package com.read.reader;
+package ru.read.reader;
 
 public class Book {
     private String author, title, path, cover;

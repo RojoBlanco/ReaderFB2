@@ -19,4 +19,6 @@ public class Document_Info {
 	// Набор изменений документа
 	private History history;
 	
+	
+	
 }

@@ -1,4 +1,4 @@
-package com.read.reader;
+package ru.read.reader;
 
 
 import java.sql.Connection;

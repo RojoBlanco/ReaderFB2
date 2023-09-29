@@ -1,4 +1,4 @@
-package com.read.reader;
+package ru.read.reader;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.xml.sax.SAXException;
+
+import SaxHandler.OpenHandler;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -30,8 +32,13 @@ public class Main extends Application {
     public Stage getPrimaryStage(){
         return this.primaryStage;
     }
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException
     {
-        launch(args);
+    	SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParser parser = factory.newSAXParser();
+        
+        OpenHandler handler = new OpenHandler();
+        parser.parse(new File("C:\\Books\\TestBook.fb2"), handler);
+        
     }
 }

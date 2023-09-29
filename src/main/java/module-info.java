@@ -3,6 +3,6 @@ module com.read.reader {
     requires javafx.fxml;
     requires java.sql;
 
-    opens com.read.reader to javafx.fxml;
-    exports com.read.reader;
+    opens ru.read.reader to javafx.fxml;
+    exports ru.read.reader;
 }

@@ -1,4 +1,4 @@
-package com.read.reader;
+package ru.read.reader;
 
 import java.io.*;
 import java.nio.file.StandardCopyOption;
