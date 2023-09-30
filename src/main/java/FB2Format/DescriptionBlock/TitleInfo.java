@@ -1,9 +1,10 @@
 package FB2Format.DescriptionBlock;
 
+import javafx.scene.image.Image;
+
 import java.util.List;
 import java.util.ArrayList;
 
-import FB2Format.Image;
 
 public class TitleInfo {
 	//Авторы
@@ -38,6 +39,7 @@ public class TitleInfo {
     }
     
     public void setGenres(String genres) {this.genres.add(genres);}
+    public void setDate(String date){this.date = date;}
     public void setAuthors(Author author) {this.authors.add(author);}
     public void setBookTitle(String bookTitle) {this.bookTitle = bookTitle;}
     public void setLang(String lang) {this.lang=lang;}

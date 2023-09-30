@@ -1,5 +1,6 @@
 package ru.read.reader;
 
+import FB2Format.DescriptionBlock.Description;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 public class Main extends Application {
+    public static Description description = new Description();
     private Stage primaryStage;
 
     @Override
@@ -34,11 +36,11 @@ public class Main extends Application {
     }
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException
     {
-    	SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
-        
+
         OpenHandler handler = new OpenHandler();
         parser.parse(new File("C:\\Books\\TestBook.fb2"), handler);
-        
+
     }
 }

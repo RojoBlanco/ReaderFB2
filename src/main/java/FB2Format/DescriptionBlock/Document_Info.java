@@ -18,7 +18,24 @@ public class Document_Info {
 	private UUID id;
 	// Набор изменений документа
 	private History history;
-	
+	private String date;
+
+	public void setAuthors(Author author) {this.authors.add(author);}
+	public void setDate(String date) {this.date = date;}
+	public void setProgramUsed(String programUsed) {this.programUsed = programUsed;}
+	public void setSrcUrl(String srcUrl) {this.srcUrl=srcUrl;}
+	public void setSrcOcr(String srcOcr) {this.srcOcr = srcOcr;}
+	public void setVersion(float version) {this.version = version;}
+	public void setUUID(UUID id) {this.id = id;}
+	public void setHistory(History history) {this.history = history;}
+
+
+	public List<Author> getAuthors() {return authors;}
+	public String       getSrcUrl() {return srcUrl;}
+	public String 	    getSrcOcr() {return srcOcr;}
+	public float   getVersion() {return version;}
+	public UUID getUUID() {return id;}
+	public History getHistory() {return history;}
 	
 	
 }
