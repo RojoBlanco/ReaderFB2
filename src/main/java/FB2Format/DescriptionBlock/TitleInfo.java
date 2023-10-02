@@ -1,6 +1,6 @@
 package FB2Format.DescriptionBlock;
 
-import javafx.scene.image.Image;
+import FB2Format.Image;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -48,6 +48,10 @@ public class TitleInfo {
     public void setTranslator(Author translator) {this.translators.add(translator);}
     public void setSrcLang(String srcLang) {this.srcLang = srcLang;}
     public void setSequence(Sequence sequence) {this.sequence.add(sequence);}
+    public void setCoverPage(String coverpage) {
+    	this.coverpage = new Image();
+    	this.coverpage.setImage(coverpage);
+    }
     
     
     public List<String> getGenres() {return genres;}
@@ -59,6 +63,8 @@ public class TitleInfo {
     public List<Author> getTranslator() {return translators;}
     public String       getSrcLang() {return srcLang;}
     public List<Sequence> getSequence() {return sequence;}
+
+
     
 }
 

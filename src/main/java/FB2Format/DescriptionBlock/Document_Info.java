@@ -1,9 +1,12 @@
 package FB2Format.DescriptionBlock;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class Document_Info {
+
+
 	// Список авторов книги
 	private List<Author> authors;
 	// Программы использованные при написании книги
@@ -19,6 +22,10 @@ public class Document_Info {
 	// Набор изменений документа
 	private History history;
 	private String date;
+
+	public Document_Info(){
+		authors = new ArrayList<>();
+	}
 
 	public void setAuthors(Author author) {this.authors.add(author);}
 	public void setDate(String date) {this.date = date;}

@@ -40,7 +40,7 @@ public class Main extends Application {
         SAXParser parser = factory.newSAXParser();
 
         OpenHandler handler = new OpenHandler();
-        parser.parse(new File("C:\\Books\\TestBook.fb2"), handler);
+        parser.parse(new File("C:\\Books\\Test.fb2"), handler);
 
     }
 }

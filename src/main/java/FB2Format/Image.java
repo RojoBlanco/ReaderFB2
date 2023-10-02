@@ -1,12 +1,17 @@
 package FB2Format;
 
 public class Image {
-    private String name;
+    private String id;
 
     public Image(){}
 
-    private void setImage(String image){name = image;}
-    private String getImage(){
-        return name;
+    public void setImage(String id){
+    	StringBuilder newId = new StringBuilder(id); 
+    	newId.deleteCharAt(0);
+    	this.id = newId.toString();
+    	
+    }
+    public String getImage(){
+        return id;
     }
 }

@@ -62,6 +62,8 @@ public class OpenHandler extends DefaultHandler {
 					titleInfo.setDate(new String(ch, start, length));
 				if(isDocumentInfo)
 					documentInfo.setDate(new String(ch,start, length));
+				break;
+				
 		}
 	}
 
@@ -81,7 +83,11 @@ public class OpenHandler extends DefaultHandler {
     			author = new Author();
     			isAuthor = true;
     			break;
-
+    		case("image"):
+    			if(isTitleInfo) {
+    				titleInfo.setCoverPage(attributes.getValue("l:href"));
+    			}
+			break;
     	}
     		
     }
