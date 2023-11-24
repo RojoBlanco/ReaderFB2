@@ -1,25 +1,34 @@
-package SaxHandler;
+package ru.read.reader.SaxHandler;
 
-import FB2Format.DescriptionBlock.*;
+import javafx.beans.binding.StringBinding;
+import ru.read.reader.FB2Format.DescriptionBlock.*;
 
-import java.util.UUID; 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.UUID;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import ru.read.reader.Main;
-public class OpenHandler extends DefaultHandler {
+public class OpenHandler
+		extends DefaultHandler {
+	Description description = new Description();
 	private TitleInfo titleInfo;
+	private StringBuilder imgBase64 = new StringBuilder();
 	private Document_Info documentInfo;
 	private Boolean isTitleInfo = false;
 	private Boolean isAuthor = false;
 	private Boolean isDocumentInfo = false;
+	private Boolean isCoverPage = false;
 	private String lastAtribute;
 	private Author author;
 	
 	@Override
 	public void characters(char[] ch, int start, int length) {
-
 		switch(lastAtribute) {
 			case ("genre"):
 				if (isTitleInfo)
@@ -63,7 +72,13 @@ public class OpenHandler extends DefaultHandler {
 				if(isDocumentInfo)
 					documentInfo.setDate(new String(ch,start, length));
 				break;
-				
+			case("binary"):
+				if (isCoverPage){
+					String imgBase64low = new String(ch, start,length);
+					imgBase64.append(imgBase64low);
+
+				}
+				break;
 		}
 	}
 
@@ -71,6 +86,12 @@ public class OpenHandler extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
     	lastAtribute = qName;
     	switch(qName) {
+			case("binary"):
+				var chhdhdfhg = attributes.getValue("id");
+				if(attributes.getValue("id").equals(description.getTitleInfo().getCoverpage().getImage())) {
+					isCoverPage  = true;
+				}
+				break;
 			case("document-info"):
 				documentInfo = new Document_Info();
 				isDocumentInfo = true;
@@ -91,21 +112,42 @@ public class OpenHandler extends DefaultHandler {
     	}
     		
     }
-
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
 		lastAtribute = "";
 		switch(qName) {
-    	case("title-info"):
-    		isTitleInfo = false;
-			Main.description.setTitleInfo(titleInfo);
-    	case("author"):
-    		isAuthor = false;
-    		if(isTitleInfo)
-    			titleInfo.setAuthors(author);
-			else if(isDocumentInfo)
-				documentInfo.setAuthors(author);
-    		break;
+			case("binary"):
+				if (isCoverPage){
+					File directory = new File("C:\\temp\\" + description.getTitleInfo().getBookTitle());
+					directory.mkdir();
+					String pathToCover = directory.toString() + "\\cover.jpg";
+					byte[] decodedBytes = Base64.getDecoder().decode(imgBase64.toString());
+					try{
+						Files.write(Paths.get(directory.toString() + "\\cover.jpg"), decodedBytes);
+					}
+					catch (IOException e){
+					}
+					Main.ficbook.setBinary(description.getTitleInfo().getCoverpage().getImage(), pathToCover);
+					isCoverPage = false;
+				}
+
+			case("document-info"):
+				description.setDocumentInfo(documentInfo);
+				break;
+			case("description"):
+				Main.ficbook.setDesc(description);
+				break;
+    		case("title-info"):
+    			isTitleInfo = false;
+				description.setTitleInfo(titleInfo);
+				break;
+    		case("author"):
+				isAuthor = false;
+				if(isTitleInfo)
+					titleInfo.setAuthors(author);
+				else if(isDocumentInfo)
+					documentInfo.setAuthors(author);
+				break;
     	}
     }
 }

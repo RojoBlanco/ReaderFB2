@@ -1,4 +1,4 @@
-package FB2Format.DescriptionBlock;
+package ru.read.reader.FB2Format.DescriptionBlock;
 
 import javafx.scene.image.Image;
 

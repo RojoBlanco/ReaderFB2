@@ -1,4 +1,4 @@
-package FB2Format.DescriptionBlock;
+package ru.read.reader.FB2Format.DescriptionBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +35,7 @@ public class Document_Info {
 	public void setVersion(float version) {this.version = version;}
 	public void setUUID(UUID id) {this.id = id;}
 	public void setHistory(History history) {this.history = history;}
+
 
 
 	public List<Author> getAuthors() {return authors;}

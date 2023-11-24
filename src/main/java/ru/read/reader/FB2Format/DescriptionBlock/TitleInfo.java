@@ -1,6 +1,6 @@
-package FB2Format.DescriptionBlock;
+package ru.read.reader.FB2Format.DescriptionBlock;
 
-import FB2Format.Image;
+import ru.read.reader.FB2Format.Image;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -64,7 +64,8 @@ public class TitleInfo {
     public String       getSrcLang() {return srcLang;}
     public List<Sequence> getSequence() {return sequence;}
 
-
-    
+    public Image getCoverpage() {
+        return coverpage;
+    }
 }
 

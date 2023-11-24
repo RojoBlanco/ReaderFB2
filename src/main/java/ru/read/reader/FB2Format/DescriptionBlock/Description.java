@@ -1,6 +1,5 @@
-package FB2Format.DescriptionBlock;
+package ru.read.reader.FB2Format.DescriptionBlock;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Description {
@@ -13,5 +12,6 @@ public class Description {
     public void setTitleInfo(TitleInfo titleInfo){
         this.titleInfo = titleInfo;
     }
-
+    public void setDocumentInfo(Document_Info documentInfo) {this.documentInfo = documentInfo;}
+    public TitleInfo getTitleInfo(){return this.titleInfo;}
 }
