@@ -13,10 +13,12 @@ import java.util.UUID;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import ru.read.reader.FB2Format.FictionBook;
 import ru.read.reader.Main;
 public class OpenHandler
 		extends DefaultHandler {
-	Description description = new Description();
+	Description description;
+	private FictionBook ficbook;
 	private TitleInfo titleInfo;
 	private StringBuilder imgBase64 = new StringBuilder();
 	private Document_Info documentInfo;
@@ -86,9 +88,15 @@ public class OpenHandler
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
     	lastAtribute = qName;
     	switch(qName) {
+			case ("FictionBook"):
+				ficbook = new FictionBook();
+				break;
+			case ("description"):
+				description = new Description();
+				break;
 			case("binary"):
-				var chhdhdfhg = attributes.getValue("id");
 				if(attributes.getValue("id").equals(description.getTitleInfo().getCoverpage().getImage())) {
+					imgBase64 = new StringBuilder();
 					isCoverPage  = true;
 				}
 				break;
@@ -118,7 +126,7 @@ public class OpenHandler
 		switch(qName) {
 			case("binary"):
 				if (isCoverPage){
-					File directory = new File("C:\\temp\\" + description.getTitleInfo().getBookTitle());
+					File directory = new File(Main.folderPath + description.getTitleInfo().getBookTitle());
 					directory.mkdir();
 					String pathToCover = directory.toString() + "\\cover.jpg";
 					byte[] decodedBytes = Base64.getDecoder().decode(imgBase64.toString());
@@ -127,7 +135,7 @@ public class OpenHandler
 					}
 					catch (IOException e){
 					}
-					Main.ficbook.setBinary(description.getTitleInfo().getCoverpage().getImage(), pathToCover);
+					ficbook.setBinary(description.getTitleInfo().getCoverpage().getImage(), pathToCover);
 					isCoverPage = false;
 				}
 
@@ -135,7 +143,7 @@ public class OpenHandler
 				description.setDocumentInfo(documentInfo);
 				break;
 			case("description"):
-				Main.ficbook.setDesc(description);
+				ficbook.setDesc(description);
 				break;
     		case("title-info"):
     			isTitleInfo = false;
@@ -147,6 +155,9 @@ public class OpenHandler
 					titleInfo.setAuthors(author);
 				else if(isDocumentInfo)
 					documentInfo.setAuthors(author);
+				break;
+			case ("FictionBook"):
+				Main.fictionBookList.add(ficbook);
 				break;
     	}
     }

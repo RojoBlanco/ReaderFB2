@@ -35,5 +35,14 @@ public class FictionBook {
         binary.put(id, path);
     }
 
-
+    public String getCover(){
+        var x=  binary.containsKey("cover");
+        if(binary.containsKey("cover.jpg")) {
+            return binary.get("cover.jpg");
+        }
+        else return "error";
+    }
+    public String getName(){
+       return desc.getTitleInfo().getBookTitle();
+    }
 }
