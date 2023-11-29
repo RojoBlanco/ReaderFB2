@@ -46,7 +46,7 @@ public class Main extends Application {
         addNewBook("C:\\Books\\Test.fb2");
         addNewBook("C:\\Books\\TestBook1.fb2");
 
-        Scene scene = new Scene(flowPane, 300, 600);
+        Scene scene = new Scene(flowPane, 1280, 920);
 
         // Устанавливаем сцену на primaryStage и отображаем окно
         primaryStage.setScene(scene);

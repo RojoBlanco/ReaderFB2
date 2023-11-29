@@ -1,6 +1,5 @@
 package ru.read.reader.SaxHandler;
 
-import javafx.beans.binding.StringBinding;
 import ru.read.reader.FB2Format.DescriptionBlock.*;
 
 import java.io.File;
