@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Author {
-	private String firstName;
-	private String midleName;
-	private String lastName;
+	private String firstName = "";
+	private String midleName = "";
+	private String lastName = "";
 	private String nickName;
 	private UUID id;
 	private List<String> emails;
@@ -25,4 +25,8 @@ public class Author {
 	 public void setUUID(UUID id) {this.id = id;}
 	 public void setEmail(String email) {emails.add(email);}
 	 public void setHomePage(String homePage) {this.homePages.add(homePage);}
+	@Override
+	public String toString(){
+		return new String(firstName + " " + midleName + " " + lastName);
+	}
 }

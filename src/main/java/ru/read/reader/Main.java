@@ -50,7 +50,7 @@ public class Main extends Application {
 
         // Устанавливаем сцену на primaryStage и отображаем окно
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Изображения с текстом");
+        primaryStage.setTitle("Библиотека");
         primaryStage.show();
         }
 

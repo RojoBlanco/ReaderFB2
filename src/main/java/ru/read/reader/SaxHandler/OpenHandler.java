@@ -21,7 +21,7 @@ public class OpenHandler
 	private TitleInfo titleInfo;
 	private StringBuilder imgBase64 = new StringBuilder();
 	private Document_Info documentInfo;
-	private Boolean isTitleInfo = false;
+	private Boolean isTitleInfo = false, isAnnatation;
 	private Boolean isAuthor = false;
 	private Boolean isDocumentInfo = false;
 	private Boolean isCoverPage = false;
@@ -31,6 +31,11 @@ public class OpenHandler
 	@Override
 	public void characters(char[] ch, int start, int length) {
 		switch(lastAtribute) {
+			case ("p"):
+				if(isAnnatation){
+					titleInfo.getAnnotation().setP(new String(ch, start, length));
+				}
+				break;
 			case ("genre"):
 				if (isTitleInfo)
 					titleInfo.setGenres(new String(ch, start, length));
@@ -87,6 +92,9 @@ public class OpenHandler
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
     	lastAtribute = qName;
     	switch(qName) {
+			case ("annotation"):
+				isAnnatation = true;
+				break;
 			case ("FictionBook"):
 				ficbook = new FictionBook();
 				break;
@@ -123,6 +131,9 @@ public class OpenHandler
     public void endElement(String uri, String localName, String qName) throws SAXException {
 		lastAtribute = "";
 		switch(qName) {
+			case ("annotation"):
+				isAnnatation = false;
+				break;
 			case("binary"):
 				if (isCoverPage){
 					File directory = new File(Main.folderPath + description.getTitleInfo().getBookTitle());

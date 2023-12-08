@@ -15,7 +15,8 @@ public class DescriptionObject extends VBox {
           setSpacing(5);
           this.name.setStyle("-fx-font-weight: bold;");
 
-          getChildren().addAll(this.name,this.text );
 
+          getChildren().addAll(this.name,this.text );
+          setAlignment(javafx.geometry.Pos.TOP_CENTER);
      }
 }

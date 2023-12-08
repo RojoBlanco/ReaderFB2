@@ -36,6 +36,7 @@ public class TitleInfo {
     	this.translators = new ArrayList<Author>();
     	this.sequence = new ArrayList<Sequence>();
     	this.keywords = new ArrayList<String>();
+        annotation = new Annotation();
     }
     
     public void setGenres(String genres) {this.genres.add(genres);}
