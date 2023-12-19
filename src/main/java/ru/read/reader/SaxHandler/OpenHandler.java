@@ -138,7 +138,7 @@ public class OpenHandler
 				if (isCoverPage){
 					File directory = new File(Main.folderPath + description.getTitleInfo().getBookTitle());
 					directory.mkdir();
-					String pathToCover = directory.toString() + "\\cover.jpg";
+					String pathToCover = directory.toString() + "\\" + description.getTitleInfo().getCoverpage().getImage();
 					byte[] decodedBytes = Base64.getDecoder().decode(imgBase64.toString());
 					try{
 						Files.write(Paths.get(directory.toString() + "\\cover.jpg"), decodedBytes);

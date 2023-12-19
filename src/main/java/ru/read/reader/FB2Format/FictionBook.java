@@ -10,6 +10,7 @@ import ru.read.reader.FB2Format.BinaryBlock.Binary;
 import ru.read.reader.FB2Format.BodyBlock.Body;
 
 public class FictionBook {
+    private String path;
     private Description desc;
     private List<Body> listBody;
     private Map<String, String> binary;
@@ -34,6 +35,9 @@ public class FictionBook {
     public void setBinary(String id, String path) {
         binary.put(id, path);
     }
+    public void addBody(Body body){
+        listBody.add(body);
+    }
 
     public String getCover(){
         var x=  binary.containsKey("cover");
@@ -44,5 +48,13 @@ public class FictionBook {
     }
     public String getName(){
        return desc.getTitleInfo().getBookTitle();
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getPath() {
+        return path;
     }
 }

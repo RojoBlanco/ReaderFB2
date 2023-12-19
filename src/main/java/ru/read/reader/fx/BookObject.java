@@ -11,13 +11,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.xml.sax.SAXException;
 import ru.read.reader.FB2Format.DescriptionBlock.Author;
 import ru.read.reader.FB2Format.FictionBook;
 import ru.read.reader.Main;
 
-public class BookObject extends VBox {
-    private static int idCounter = 0;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
+public class BookObject extends VBox {
+    private static int nowBook;
+    private static int idCounter = 0;
+    private  static Stage popupStage;
     private int id;
     private ImageView cover;
     private Image img;
@@ -38,13 +43,14 @@ public class BookObject extends VBox {
 
 
         addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            openPopupWindow("hell");
+            openPopupWindow();
             System.out.println("Clicked on ImageWithTextPane with id: " + id);
         });
     }
 
-    private void openPopupWindow(String popupText) {
+    private void openPopupWindow() {
         String authors = new String("");
+        nowBook = id;
         // Создаем новое окно
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -57,6 +63,7 @@ public class BookObject extends VBox {
         DescriptionObject descriptionObject = new DescriptionObject("Название", thisBook.getName());
         for (Author author: thisBook.getDesc().getTitleInfo().getAuthors()){
             authors += author.toString() + " ";
+            System.out.println();
         }
         DescriptionObject descriptionObject2 = new DescriptionObject("Автор",authors);
         var annotation = thisBook.getDesc().getTitleInfo().getAnnotation().toString();
@@ -64,6 +71,18 @@ public class BookObject extends VBox {
 
         Button btn = new Button();
         btn.setText("Открыть книгу");
+        btn.setOnAction(e -> {
+            try {
+                openFb2ReaderWindow(Main.fictionBookList.get(id).getPath());
+
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (ParserConfigurationException ex) {
+                throw new RuntimeException(ex);
+            } catch (SAXException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         // Создаем VBox и добавляем в него Label
         VBox popupLayout = new VBox(10);
@@ -80,8 +99,22 @@ public class BookObject extends VBox {
 
         // Устанавливаем сцену для нового окна
         popupStage.setScene(popupScene);
-
+        this.popupStage = popupStage;
         // Показываем новое окно
+        popupStage.show();
+    }
+
+    public static int getNowBook() {
+        return nowBook;
+    }
+
+    private void openFb2ReaderWindow(String filePath) throws IOException, ParserConfigurationException, SAXException {
+        Reader fb2ReaderWindow = new Reader();
+        fb2ReaderWindow.display(filePath);
+        popupStage.hide();
+        Main.hideStage();
+    }
+    public static void showPopoutStage(){
         popupStage.show();
     }
 }

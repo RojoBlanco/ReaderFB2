@@ -13,6 +13,7 @@ public class DescriptionObject extends VBox {
           this.name = new Label(name);
           this.text = new Label(text);
           setSpacing(5);
+          System.out.println(this.name.getLayoutBounds().getWidth());
           this.name.setStyle("-fx-font-weight: bold;");
 
 
