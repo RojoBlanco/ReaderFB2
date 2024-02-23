@@ -28,12 +28,14 @@ public class Main extends Application {
     public static List<FictionBook> fictionBookList = new ArrayList<>();
 
     private String selectedFilePath;
-    public static String folderPath = "C:\\temp\\";
+    public static File folderPath = new File("user.dir");
+    public static File configDirectory = new File(folderPath, "book");
     private static Stage primarStage;
     private FlowPane flowPane;
 
     @Override
     public void start(Stage primaryStage)  {
+        configDirectory.mkdir();
         primarStage = primaryStage;
         flowPane = new FlowPane();
         flowPane.setHgap(10); // Устанавливаем горизонтальный отступ между элементами
@@ -89,7 +91,8 @@ public class Main extends Application {
         parser.parse(new File(path), handler);
         fictionBookList.get(fictionBookList.size() - 1).setPath(path);
                 flowPane.getChildren().add(new BookObject(fictionBookList.get(fictionBookList.size() - 1 ).getName(),
-                fictionBookList.get(fictionBookList.size() - 1 ).getCover()));
+                fictionBookList.get(fictionBookList.size() - 1 ).getCoverPath()));
+       
     }
     public static Stage getPrimaryStage(){
         return primarStage;

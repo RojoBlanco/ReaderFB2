@@ -16,16 +16,14 @@ import ru.read.reader.FB2Format.FictionBook;
 import ru.read.reader.Main;
 public class OpenHandler
 		extends DefaultHandler {
-	Description description;
+	private Description description;
+	private File directory;
 	private FictionBook ficbook;
 	private TitleInfo titleInfo;
 	private StringBuilder imgBase64 = new StringBuilder();
 	private Document_Info documentInfo;
-	private Boolean isTitleInfo = false, isAnnatation;
-	private Boolean isAuthor = false;
-	private Boolean isDocumentInfo = false;
-	private Boolean isCoverPage = false;
-	private String lastAtribute;
+	private boolean isTitleInfo , isAnnatation , isCoverPage, isDocumentInfo , isAuthor  ;
+	private String lastAtribute, binaryId;
 	private Author author;
 	
 	@Override
@@ -81,8 +79,9 @@ public class OpenHandler
 			case("binary"):
 				if (isCoverPage){
 					String imgBase64low = new String(ch, start,length);
+					
 					imgBase64.append(imgBase64low);
-
+					
 				}
 				break;
 		}
@@ -101,11 +100,10 @@ public class OpenHandler
 			case ("description"):
 				description = new Description();
 				break;
-			case("binary"):
-				if(attributes.getValue("id").equals(description.getTitleInfo().getCoverpage().getImage())) {
+			case("binary"): 
+					binaryId = attributes.getValue("id");
 					imgBase64 = new StringBuilder();
-					isCoverPage  = true;
-				}
+					isCoverPage  = true;		
 				break;
 			case("document-info"):
 				documentInfo = new Document_Info();
@@ -136,19 +134,17 @@ public class OpenHandler
 				break;
 			case("binary"):
 				if (isCoverPage){
-					File directory = new File(Main.folderPath + description.getTitleInfo().getBookTitle());
-					directory.mkdir();
-					String pathToCover = directory.toString() + "\\" + description.getTitleInfo().getCoverpage().getImage();
+					String pathToImage = directory +"\\" +binaryId;
 					byte[] decodedBytes = Base64.getDecoder().decode(imgBase64.toString());
 					try{
-						Files.write(Paths.get(directory.toString() + "\\cover.jpg"), decodedBytes);
+						Files.write(Paths.get(pathToImage), decodedBytes);
 					}
 					catch (IOException e){
 					}
-					ficbook.setBinary(description.getTitleInfo().getCoverpage().getImage(), pathToCover);
+					ficbook.setBinary(binaryId, pathToImage);
 					isCoverPage = false;
 				}
-
+				break;
 			case("document-info"):
 				description.setDocumentInfo(documentInfo);
 				break;
@@ -158,6 +154,8 @@ public class OpenHandler
     		case("title-info"):
     			isTitleInfo = false;
 				description.setTitleInfo(titleInfo);
+				directory = new File(Main.configDirectory,  description.getTitleInfo().getBookTitle());
+				directory.mkdir();
 				break;
     		case("author"):
 				isAuthor = false;

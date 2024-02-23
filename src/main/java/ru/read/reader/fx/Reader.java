@@ -30,36 +30,34 @@ public class Reader {
 
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
-        ReadHandler handler = new ReadHandler();
-        parser.parse(new File(filePath), handler);
-        primaryStage.setOnCloseRequest(event -> {
-                Main.showStage();
-                BookObject.showPopoutStage(); // Показываем предыдущее окно при закрытии
+        // primaryStage.setOnCloseRequest(event -> {
+        //         Main.showStage();
+        //         BookObject.showPopoutStage(); // Показываем предыдущее окно при закрытии
 
-        });
+        // });
 
 
-        // Создание ComboBox для выбора размера шрифта
-        ComboBox<String> fontSizeComboBox = new ComboBox<>(FXCollections.observableArrayList("12px", "16px", "20px", "24px"));
-        fontSizeComboBox.setValue("16px"); // Установка размера шрифта по умолчанию
-        fontSizeComboBox.setPrefSize(15, 15);
+        // // Создание ComboBox для выбора размера шрифта
+        // ComboBox<String> fontSizeComboBox = new ComboBox<>(FXCollections.observableArrayList("12px", "16px", "20px", "24px"));
+        // fontSizeComboBox.setValue("16px"); // Установка размера шрифта по умолчанию
+        // fontSizeComboBox.setPrefSize(15, 15);
 
-        // Обработчик изменения размера шрифта
-        fontSizeComboBox.setOnAction(event -> {
-            String selectedFontSize = fontSizeComboBox.getValue();
-            applyFontSize(webView, selectedFontSize);
-        });
+        // // Обработчик изменения размера шрифта
+        // fontSizeComboBox.setOnAction(event -> {
+        //     String selectedFontSize = fontSizeComboBox.getValue();
+        //     applyFontSize(webView, selectedFontSize);
+        // });
 
 
-        String htmlContent = "<html>" + Main.fictionBookList.get(BookObject.getNowBook()).getListBody().get(0).getTextBook() + "</html>";
+        // String htmlContent = "<html>" + Main.fictionBookList.get(BookObject.getNowBook()).getListBody().get(0).getTextBook() + "</html>";
 
-        webView.getEngine().loadContent(htmlContent);
+        // webView.getEngine().loadContent(htmlContent);
 
-        BorderPane root = new BorderPane();
-        root.setTop(fontSizeComboBox); // Устанавливаем ComboBox в верхнюю часть макета
-        root.setCenter(webView); // Устанавливаем WebView в центр макета
-        primaryStage.setScene(new Scene(root, 800, 800));
-        primaryStage.show();
+        // BorderPane root = new BorderPane();
+        // root.setTop(fontSizeComboBox); // Устанавливаем ComboBox в верхнюю часть макета
+        // root.setCenter(webView); // Устанавливаем WebView в центр макета
+        // primaryStage.setScene(new Scene(root, 800, 800));
+        // primaryStage.show();
     }
 
     private void applyFontSize(WebView webView, String fontSize) {

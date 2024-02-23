@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import ru.read.reader.FB2Format.DescriptionBlock.Description;
-import ru.read.reader.FB2Format.BinaryBlock.Binary;
 import ru.read.reader.FB2Format.BodyBlock.Body;
 
 public class FictionBook {
@@ -39,10 +38,18 @@ public class FictionBook {
         listBody.add(body);
     }
 
-    public String getCover(){
-        var x=  binary.containsKey("cover");
+    public Description getDescription(){
+        return desc;
+    }
+    public String getCoverPath(){
         if(binary.containsKey("cover.jpg")) {
             return binary.get("cover.jpg");
+        }
+        else return "error";
+    }
+    public String getCoverName(){
+        if(binary.containsKey("cover.jpg")) {
+            return "cover.jpg";
         }
         else return "error";
     }

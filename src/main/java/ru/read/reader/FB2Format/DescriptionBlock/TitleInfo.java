@@ -38,7 +38,7 @@ public class TitleInfo {
     	this.keywords = new ArrayList<String>();
         annotation = new Annotation();
     }
-    
+    //Сеттеры
     public void setGenres(String genres) {this.genres.add(genres);}
     public void setDate(String date){this.date = date;}
     public void setAuthors(Author author) {this.authors.add(author);}
@@ -54,7 +54,7 @@ public class TitleInfo {
     	this.coverpage.setImage(coverpage);
     }
     
-    
+    //Гетерры
     public List<String> getGenres() {return genres;}
     public List<Author> getAuthors() {return authors;}
     public String       getBookTitle() {return bookTitle;}
@@ -64,9 +64,6 @@ public class TitleInfo {
     public List<Author> getTranslator() {return translators;}
     public String       getSrcLang() {return srcLang;}
     public List<Sequence> getSequence() {return sequence;}
-
-    public Image getCoverpage() {
-        return coverpage;
-    }
+    public Image getCoverpage() {return coverpage;}
 }
 
