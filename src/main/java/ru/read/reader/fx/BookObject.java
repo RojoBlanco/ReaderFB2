@@ -31,7 +31,7 @@ public class BookObject extends VBox {
     public BookObject(String name, String path){
         id = idCounter++;
         this.name = new Label(name);
-        img = new Image(path);
+        img = new Image("file:"+ path);
 
         cover = new ImageView(img);
         cover.setFitHeight(300);
@@ -73,6 +73,7 @@ public class BookObject extends VBox {
         btn.setText("Открыть книгу");
         btn.setOnAction(e -> {
             try {
+                System.out.println(Main.fictionBookList.get(id).getPath());
                 openFb2ReaderWindow(Main.fictionBookList.get(id).getPath());
 
             } catch (IOException ex) {

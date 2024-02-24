@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 import ru.read.reader.FB2Format.BodyBlock.Body;
 import ru.read.reader.Main;
+import ru.read.reader.SaxHandler.OpenHandler;
 import ru.read.reader.SaxHandler.ReadHandler;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,34 +31,36 @@ public class Reader {
 
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
-        // primaryStage.setOnCloseRequest(event -> {
-        //         Main.showStage();
-        //         BookObject.showPopoutStage(); // Показываем предыдущее окно при закрытии
+        primaryStage.setOnCloseRequest(event -> {
+                Main.showStage();
+                BookObject.showPopoutStage(); // Показываем предыдущее окно при закрытии
 
-        // });
-
-
-        // // Создание ComboBox для выбора размера шрифта
-        // ComboBox<String> fontSizeComboBox = new ComboBox<>(FXCollections.observableArrayList("12px", "16px", "20px", "24px"));
-        // fontSizeComboBox.setValue("16px"); // Установка размера шрифта по умолчанию
-        // fontSizeComboBox.setPrefSize(15, 15);
-
-        // // Обработчик изменения размера шрифта
-        // fontSizeComboBox.setOnAction(event -> {
-        //     String selectedFontSize = fontSizeComboBox.getValue();
-        //     applyFontSize(webView, selectedFontSize);
-        // });
+         });
+        ReadHandler handler = new ReadHandler();
+        parser.parse("file:"+Main.fictionBookList.get(BookObject.getNowBook()).getPath(),handler);
 
 
-        // String htmlContent = "<html>" + Main.fictionBookList.get(BookObject.getNowBook()).getListBody().get(0).getTextBook() + "</html>";
+         // Создание ComboBox для выбора размера шрифта
+         ComboBox<String> fontSizeComboBox = new ComboBox<>(FXCollections.observableArrayList("12px", "16px", "20px", "24px"));
+         fontSizeComboBox.setValue("16px"); // Установка размера шрифта по умолчанию
+         fontSizeComboBox.setPrefSize(15, 15);
 
-        // webView.getEngine().loadContent(htmlContent);
+         // Обработчик изменения размера шрифта
+         fontSizeComboBox.setOnAction(event -> {
+             String selectedFontSize = fontSizeComboBox.getValue();
+             applyFontSize(webView, selectedFontSize);
+         });
 
-        // BorderPane root = new BorderPane();
-        // root.setTop(fontSizeComboBox); // Устанавливаем ComboBox в верхнюю часть макета
-        // root.setCenter(webView); // Устанавливаем WebView в центр макета
-        // primaryStage.setScene(new Scene(root, 800, 800));
-        // primaryStage.show();
+
+         String htmlContent = "<html>" + Main.fictionBookList.get(BookObject.getNowBook()).getListBody().get(0).getTextBook() + "</html>";
+
+         webView.getEngine().loadContent(htmlContent);
+
+         BorderPane root = new BorderPane();
+         root.setTop(fontSizeComboBox); // Устанавливаем ComboBox в верхнюю часть макета
+         root.setCenter(webView); // Устанавливаем WebView в центр макета
+         primaryStage.setScene(new Scene(root, 800, 800));
+         primaryStage.show();
     }
 
     private void applyFontSize(WebView webView, String fontSize) {

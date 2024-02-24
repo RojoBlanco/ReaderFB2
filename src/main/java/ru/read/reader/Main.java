@@ -28,14 +28,15 @@ public class Main extends Application {
     public static List<FictionBook> fictionBookList = new ArrayList<>();
 
     private String selectedFilePath;
-    public static File folderPath = new File("user.dir");
+    public static File folderPath = new File(System.getProperty("user.dir"));
     public static File configDirectory = new File(folderPath, "book");
     private static Stage primarStage;
     private FlowPane flowPane;
 
     @Override
     public void start(Stage primaryStage)  {
-        configDirectory.mkdir();
+        System.out.println(configDirectory.mkdir());
+
         primarStage = primaryStage;
         flowPane = new FlowPane();
         flowPane.setHgap(10); // Устанавливаем горизонтальный отступ между элементами

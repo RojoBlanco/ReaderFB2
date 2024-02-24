@@ -134,14 +134,14 @@ public class OpenHandler
 				break;
 			case("binary"):
 				if (isCoverPage){
-					String pathToImage = directory +"\\" +binaryId;
+					File pathToImage = new File(directory,binaryId);
 					byte[] decodedBytes = Base64.getDecoder().decode(imgBase64.toString());
 					try{
-						Files.write(Paths.get(pathToImage), decodedBytes);
+						Files.write(Paths.get(pathToImage.toString()), decodedBytes);
 					}
 					catch (IOException e){
 					}
-					ficbook.setBinary(binaryId, pathToImage);
+					ficbook.setBinary(binaryId, pathToImage.toString());
 					isCoverPage = false;
 				}
 				break;
