@@ -1,4 +1,4 @@
-package ru.read.reader.FB2Format;
+package ru.read.reader.fb2format;
 
 public class Image {
     private String id;

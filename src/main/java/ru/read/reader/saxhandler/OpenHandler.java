@@ -1,6 +1,6 @@
-package ru.read.reader.SaxHandler;
+package ru.read.reader.saxhandler;
 
-import ru.read.reader.FB2Format.DescriptionBlock.*;
+import ru.read.reader.fb2format.DescriptionBlock.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.UUID;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import ru.read.reader.FB2Format.FictionBook;
+import ru.read.reader.fb2format.FictionBook;
 import ru.read.reader.Main;
 public class OpenHandler
 		extends DefaultHandler {

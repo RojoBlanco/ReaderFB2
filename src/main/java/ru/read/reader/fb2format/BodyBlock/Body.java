@@ -1,4 +1,4 @@
-package ru.read.reader.FB2Format.BodyBlock;
+package ru.read.reader.fb2format.BodyBlock;
 
 public class Body {
 

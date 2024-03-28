@@ -1,11 +1,11 @@
-package ru.read.reader.SaxHandler;
+package ru.read.reader.saxhandler;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import ru.read.reader.FB2Format.BodyBlock.Body;
-import ru.read.reader.FB2Format.FictionBook;
-import ru.read.reader.FB2Format.Image;
+import ru.read.reader.fb2format.BodyBlock.Body;
+import ru.read.reader.fb2format.FictionBook;
+import ru.read.reader.fb2format.Image;
 import ru.read.reader.Main;
 import ru.read.reader.fx.BookObject;
 

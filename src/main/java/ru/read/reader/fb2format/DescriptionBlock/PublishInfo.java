@@ -1,4 +1,4 @@
-package ru.read.reader.FB2Format.DescriptionBlock;
+package ru.read.reader.fb2format.DescriptionBlock;
 
 import java.util.List;
 //Информация о бумажном издании книги

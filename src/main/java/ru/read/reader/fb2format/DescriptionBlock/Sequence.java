@@ -1,4 +1,4 @@
-package ru.read.reader.FB2Format.DescriptionBlock;
+package ru.read.reader.fb2format.DescriptionBlock;
 
 public class Sequence {
 	private String name;

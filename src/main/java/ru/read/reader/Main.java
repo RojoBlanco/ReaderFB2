@@ -17,8 +17,8 @@ import java.util.List;
 
 import org.xml.sax.SAXException;
 
-import ru.read.reader.FB2Format.FictionBook;
-import ru.read.reader.SaxHandler.OpenHandler;
+import ru.read.reader.fb2format.FictionBook;
+import ru.read.reader.saxhandler.OpenHandler;
 import ru.read.reader.fx.BookObject;
 
 import javax.xml.parsers.ParserConfigurationException;

@@ -1,12 +1,12 @@
-package ru.read.reader.FB2Format;
+package ru.read.reader.fb2format;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ru.read.reader.FB2Format.DescriptionBlock.Description;
-import ru.read.reader.FB2Format.BodyBlock.Body;
+import ru.read.reader.fb2format.DescriptionBlock.Description;
+import ru.read.reader.fb2format.BodyBlock.Body;
 
 public class FictionBook {
     private String path;

@@ -1,6 +1,6 @@
-package ru.read.reader.FB2Format.DescriptionBlock;
+package ru.read.reader.fb2format.DescriptionBlock;
 
-import ru.read.reader.FB2Format.Image;
+import ru.read.reader.fb2format.Image;
 
 import java.util.List;
 import java.util.ArrayList;
