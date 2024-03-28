@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,15 +29,17 @@ public class Main extends Application {
     public static List<FictionBook> fictionBookList = new ArrayList<>();
 
     private String selectedFilePath;
-    public static File folderPath = new File(System.getProperty("user.dir"));
-    public static File configDirectory = new File(folderPath, "book");
+    public static File folderPath;
+    public static File configDirectory;
     private static Stage primarStage;
     private FlowPane flowPane;
 
     @Override
-    public void start(Stage primaryStage)  {
+    public void start(Stage primaryStage) throws URISyntaxException {
+        folderPath = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
+        configDirectory = new File(folderPath, "book");
+        System.out.println(folderPath.getPath());
         System.out.println(configDirectory.mkdir());
-
         primarStage = primaryStage;
         flowPane = new FlowPane();
         flowPane.setHgap(10); // Устанавливаем горизонтальный отступ между элементами
@@ -47,11 +50,7 @@ public class Main extends Application {
         chooseFileButton.setOnAction(e -> {
             try {
                 chooseFile();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            } catch (ParserConfigurationException ex) {
-                throw new RuntimeException(ex);
-            } catch (SAXException ex) {
+            } catch (IOException | ParserConfigurationException | SAXException ex) {
                 throw new RuntimeException(ex);
             }
         });
