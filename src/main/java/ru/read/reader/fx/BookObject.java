@@ -12,8 +12,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.xml.sax.SAXException;
-import ru.read.reader.FB2Format.DescriptionBlock.Author;
-import ru.read.reader.FB2Format.FictionBook;
+import ru.read.reader.fb2format.DescriptionBlock.Author;
+import ru.read.reader.fb2format.FictionBook;
 import ru.read.reader.Main;
 
 import javax.xml.parsers.ParserConfigurationException;

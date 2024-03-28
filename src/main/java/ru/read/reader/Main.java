@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.xml.sax.SAXException;
 
+import ru.read.reader.database.Database;
 import ru.read.reader.fb2format.FictionBook;
 import ru.read.reader.saxhandler.OpenHandler;
 import ru.read.reader.fx.BookObject;
@@ -29,17 +30,14 @@ public class Main extends Application {
     public static List<FictionBook> fictionBookList = new ArrayList<>();
 
     private String selectedFilePath;
-    public static File folderPath;
-    public static File configDirectory;
+    public static File folderPath, configDirectory, tempDirectory, dbDirectory;
+
     private static Stage primarStage;
     private FlowPane flowPane;
 
     @Override
     public void start(Stage primaryStage) throws URISyntaxException {
-        folderPath = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
-        configDirectory = new File(folderPath, "book");
-        System.out.println(folderPath.getPath());
-        System.out.println(configDirectory.mkdir());
+        createMainDirs();
         primarStage = primaryStage;
         flowPane = new FlowPane();
         flowPane.setHgap(10); // Устанавливаем горизонтальный отступ между элементами
@@ -72,7 +70,24 @@ public class Main extends Application {
         primaryStage.setTitle("Библиотека");
         primaryStage.show();
     }
+    private void createMainDirs(){
+        folderPath = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
+        configDirectory = new File(folderPath, "User");
+        dbDirectory = new File(configDirectory, "db");
+        tempDirectory = new File(configDirectory, "temp");
+        System.out.println(folderPath.getPath());
+        System.out.println("Папка уже создана" + configDirectory.getPath()+ " " + !configDirectory.mkdir());
 
+
+        boolean haveDb = dbDirectory.mkdir();
+        Database db = new Database(dbDirectory.getPath());
+        System.out.println("Папка уже создана" + dbDirectory.getPath() + " " + !haveDb);
+        if(haveDb){
+            db.createDataBase();
+        }
+        System.out.println("Папка уже создана" + tempDirectory.getPath() + " " + !tempDirectory.mkdir());
+
+    }
     private void chooseFile()throws IOException, ParserConfigurationException, SAXException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("FB2 Files", "*.fb2"));
@@ -106,6 +121,5 @@ public class Main extends Application {
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException
     {
         launch(args);
-
     }
 }

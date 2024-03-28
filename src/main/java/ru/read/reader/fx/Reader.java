@@ -9,10 +9,10 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
-import ru.read.reader.FB2Format.BodyBlock.Body;
+import ru.read.reader.fb2format.BodyBlock.Body;
 import ru.read.reader.Main;
-import ru.read.reader.SaxHandler.OpenHandler;
-import ru.read.reader.SaxHandler.ReadHandler;
+import ru.read.reader.saxhandler.OpenHandler;
+import ru.read.reader.saxhandler.ReadHandler;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
