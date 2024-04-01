@@ -9,9 +9,19 @@ public class Description {
     private PublishInfo publishInfo;
     private List<CustomInfo> customInfoLists;
 
-    public void setTitleInfo(TitleInfo titleInfo){
+    public Description() {
+        titleInfo = new TitleInfo();
+    }
+
+    public void setTitleInfo(TitleInfo titleInfo) {
         this.titleInfo = titleInfo;
     }
-    public void setDocumentInfo(Document_Info documentInfo) {this.documentInfo = documentInfo;}
-    public TitleInfo getTitleInfo(){return this.titleInfo;}
+
+    public void setDocumentInfo(Document_Info documentInfo) {
+        this.documentInfo = documentInfo;
+    }
+
+    public TitleInfo getTitleInfo() {
+        return this.titleInfo;
+    }
 }

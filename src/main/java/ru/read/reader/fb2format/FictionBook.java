@@ -8,13 +8,15 @@ import java.util.Map;
 import ru.read.reader.fb2format.DescriptionBlock.Description;
 import ru.read.reader.fb2format.BodyBlock.Body;
 
-public class FictionBook {
+public class FictionBook implements Comparable<FictionBook>{
     private String path;
     private Description desc;
-    private List<Body> listBody;
-    private Map<String, String> binary;
+    private final List<Body> listBody;
+    private final Map<String, String> binary;
+    private int index;
 
     public FictionBook(){
+        desc = new Description();
         this.binary = new HashMap<>();
         this.listBody = new ArrayList<>();
     }
@@ -42,10 +44,7 @@ public class FictionBook {
         return desc;
     }
     public String getCoverPath(){
-        if(binary.containsKey("cover.jpg")) {
-            return binary.get("cover.jpg");
-        }
-        else return "error";
+        return binary.getOrDefault("cover.jpg", "error");
     }
     public String getCoverName(){
         if(binary.containsKey("cover.jpg")) {
@@ -63,5 +62,27 @@ public class FictionBook {
 
     public String getPath() {
         return path;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+    @Override
+    public int compareTo(FictionBook otherBook) {
+        return Integer.compare(this.index, otherBook.index);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof FictionBook){
+            FictionBook obj1 = (FictionBook) obj;
+            return(this.getDescription().getTitleInfo().getBookTitle().equals(obj1.getDescription().getTitleInfo().getBookTitle())
+                    && this.getDescription().getTitleInfo().getAuthors().stream().allMatch(obj1.getDescription().getTitleInfo().getAuthors()::contains));
+        }
+        return false;
     }
 }

@@ -28,18 +28,18 @@ import javax.xml.parsers.SAXParserFactory;
 
 public class Main extends Application {
     public static List<FictionBook> fictionBookList = new ArrayList<>();
-
-    private String selectedFilePath;
+    private Database db;
     public static File folderPath, configDirectory, tempDirectory, dbDirectory;
-
     private static Stage primarStage;
     private FlowPane flowPane;
 
     @Override
     public void start(Stage primaryStage) throws URISyntaxException {
-        createMainDirs();
+        new Thread(this::createMainDirs).start();
+
         primarStage = primaryStage;
         flowPane = new FlowPane();
+
         flowPane.setHgap(10); // Устанавливаем горизонтальный отступ между элементами
         flowPane.setVgap(10); // Устанавливаем вертикальный отступ между элементами
         flowPane.setPrefSize(1000, 900);
@@ -78,12 +78,14 @@ public class Main extends Application {
         System.out.println(folderPath.getPath());
         System.out.println("Папка уже создана" + configDirectory.getPath()+ " " + !configDirectory.mkdir());
 
-
         boolean haveDb = dbDirectory.mkdir();
-        Database db = new Database(dbDirectory.getPath());
+        db = new Database(dbDirectory.getPath());
         System.out.println("Папка уже создана" + dbDirectory.getPath() + " " + !haveDb);
         if(haveDb){
             db.createDataBase();
+        }
+        else {
+            db.readAllBook();
         }
         System.out.println("Папка уже создана" + tempDirectory.getPath() + " " + !tempDirectory.mkdir());
 
@@ -93,22 +95,34 @@ public class Main extends Application {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("FB2 Files", "*.fb2"));
         File selectedFile = fileChooser.showOpenDialog(primarStage);
         if (selectedFile != null) {
-            selectedFilePath = selectedFile.getAbsolutePath();
+            String selectedFilePath = selectedFile.getAbsolutePath();
             addNewBook(selectedFilePath);
         }
     }
 
-    private void addNewBook(String path) throws IOException, ParserConfigurationException, SAXException {
+    private void addNewBook(String path)  {
         SAXParserFactory factory = SAXParserFactory.newInstance();
-        SAXParser parser = factory.newSAXParser();
+        SAXParser parser = null;
+        try {
+            parser = factory.newSAXParser();
+        } catch (ParserConfigurationException | SAXException e) {
+            System.out.println(e.getStackTrace());
+        }
 
         OpenHandler handler = new OpenHandler();
-        parser.parse(new File(path), handler);
+        try {
+            parser.parse(new File(path), handler);
+        } catch (SAXException | IOException e) {
+            System.out.println(e.getStackTrace());
+        }
+        if(handler.isAdd){
         fictionBookList.get(fictionBookList.size() - 1).setPath(path);
-                flowPane.getChildren().add(new BookObject(fictionBookList.get(fictionBookList.size() - 1 ).getName(),
-                fictionBookList.get(fictionBookList.size() - 1 ).getCoverPath()));
-       
+        flowPane.getChildren().add(new BookObject(fictionBookList.get(fictionBookList.size() - 1 ).getName(),
+        fictionBookList.get(fictionBookList.size() - 1 ).getCoverPath()));
+        new Thread(() -> db.addNewBook(fictionBookList.get(fictionBookList.size() - 1))).start();
+        }
     }
+
     public static Stage getPrimaryStage(){
         return primarStage;
     }
@@ -118,7 +132,7 @@ public class Main extends Application {
     public static void showStage(){
         primarStage.show();
     }
-    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException
+    public static void main(String[] args)
     {
         launch(args);
     }

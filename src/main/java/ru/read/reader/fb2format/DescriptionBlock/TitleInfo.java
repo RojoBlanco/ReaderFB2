@@ -27,6 +27,7 @@ public class TitleInfo {
     private List<Author> translators;
     //Язык изначальной книги (Для переводов)
     private String srcLang;
+
     //Серия изданий, в которое входит книга и номер в серии
     private List<Sequence> sequence;
     
@@ -65,5 +66,6 @@ public class TitleInfo {
     public String       getSrcLang() {return srcLang;}
     public List<Sequence> getSequence() {return sequence;}
     public Image getCoverpage() {return coverpage;}
+    public String getDate(){return date;}
 }
 

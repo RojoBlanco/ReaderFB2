@@ -1,7 +1,5 @@
 package ru.read.reader.fb2format.DescriptionBlock;
 
-import javafx.beans.binding.StringBinding;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +9,10 @@ public class Annotation {
     private List<String> p;
     public Annotation(){
         p = new ArrayList<>();
+    }
+    public Annotation(String s){
+        p = new ArrayList<>();
+        p.add(s);
     }
 
     public List<String> getP() {

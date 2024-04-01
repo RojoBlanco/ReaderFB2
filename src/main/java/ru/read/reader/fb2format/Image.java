@@ -1,5 +1,11 @@
 package ru.read.reader.fb2format;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
+
 public class Image {
     private String id;
     private String format;
@@ -17,5 +23,15 @@ public class Image {
     }
     public String getFormat(){
         return format;
+    }
+    public static void fromBase64ToImage(File pathToFile, StringBuilder image){
+        byte[] decodedBytes = Base64.getDecoder().decode(image.toString());
+        try{
+            Files.write(Paths.get(pathToFile.toString()), decodedBytes);
+        }
+        catch (IOException ignored){
+            System.out.println(ignored.getStackTrace());
+        }
+
     }
 }
