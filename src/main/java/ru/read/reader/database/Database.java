@@ -10,6 +10,7 @@ import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Database {
     private final String DB_URL;
@@ -32,18 +33,17 @@ public class Database {
 
         String sqlBooks = "CREATE TABLE IF NOT EXISTS Books (\n"
                 + "    id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-                + "    Title TEX NOT NULL,\n"
+                + "    Title TEXT NOT NULL,\n"
                 + "    Path TEXT NOT NULL,\n"
                 + "    Date_Written TEXT NOT NULL,\n"
                 + "    Language TEXT NOT NULL,\n"
-                + "    Annotation TEXT NOT NULL,\n"
-                + "    FOREIGN KEY (id) REFERENCES Author(id)\n"
+                + "    Annotation TEXT NOT NULL\n"
                 + ");";
 
         String sqlImages = "CREATE TABLE IF NOT EXISTS Images (\n"
-                + "    id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-                + "    Title INTEGER NOT NULL,\n"
-                + "    Path INTEGER NOT NULL,\n"
+                + "    id INTEGER ,\n"
+                + "    Title TEXT PRIMARY KEY NOT NULL,\n"
+                + "    Path TEXT NOT NULL,\n"
                 + "    FOREIGN KEY (id) REFERENCES Books(id)\n"
                 + ");";
 
@@ -92,10 +92,10 @@ public class Database {
 
         String sqlBookAuthor = "CREATE TABLE IF NOT EXISTS Book_Author (\n"
                 + "    Book_Id INTEGER NOT NULL,\n"
-                + "    Author_Id String NOT NULL,\n"
+                + "    Author_Id TEXT NOT NULL,\n"
                 + "    PRIMARY KEY (Book_Id, Author_Id),\n"
                 + "    FOREIGN KEY (Book_Id) REFERENCES Books(id),\n"
-                + "    FOREIGN KEY (Author_Id) REFERENCES Author(id)\n"
+                + "    FOREIGN KEY (Author_Id) REFERENCES Author(uuid)\n"
                 + ");";
 
         Statement stmt = null;
@@ -147,14 +147,14 @@ public class Database {
 
     public void addNewBook(FictionBook ficbook) {
         String sqlBookAdd = "INSERT INTO Books (Path,Title ,Date_Written, Language, Annotation)   VALUES(?,?,?,?,?)";
-        String sqlImageAdd = "INSERT INTO Images (Path, Title)   VALUES(?,?)";
+        String sqlImageAdd = "INSERT INTO Images (id, Path, Title)   VALUES(?,?,?)";
         String sqlAuthorsAdd = "INSERT INTO Author (Name, MiddleName, LastName, Nickname , uuid)   VALUES(?,?,?,?,?)";
         String sqlGenreAdd = "INSERT INTO Genres (Genre)   VALUES(?)";
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmtBook = conn.prepareStatement(sqlBookAdd);
              PreparedStatement pstmtImage = conn.prepareStatement(sqlImageAdd);
              PreparedStatement pstmtAuthor = conn.prepareStatement(sqlAuthorsAdd);
-             PreparedStatement pstmtGenre = conn.prepareStatement(sqlAuthorsAdd);) {
+             PreparedStatement pstmtGenre = conn.prepareStatement(sqlGenreAdd);) {
             if (conn != null) {
                 insertBook(ficbook, pstmtBook);
                 insertImage(ficbook, pstmtImage);
@@ -177,8 +177,9 @@ public class Database {
 
     private void insertImage(FictionBook fictionBook, PreparedStatement pstmt) throws SQLException {
         for (String s : fictionBook.getListBinary().keySet()) {
-            pstmt.setString(1, fictionBook.getListBinary().get(s));
-            pstmt.setString(2, s);
+            pstmt.setInt(1,fictionBook.getIndex()+1);
+            pstmt.setString(2, fictionBook.getListBinary().get(s));
+            pstmt.setString(3, s);
             pstmt.executeUpdate();
         }
     }
@@ -197,7 +198,7 @@ public class Database {
                 pstmt.executeUpdate();
             }
             PreparedStatement pstmtAuthor = conn.prepareStatement("INSERT INTO Book_Author (Book_Id, Author_Id)   VALUES(?,?)");
-            pstmtAuthor.setInt(1, fictionBook.getIndex());
+            pstmtAuthor.setInt(1, fictionBook.getIndex()+1);
             pstmtAuthor.setString(2, author.getId().toString());
             pstmtAuthor.executeUpdate();
         }
@@ -213,18 +214,19 @@ public class Database {
                 pstmt.executeUpdate();
             }
             PreparedStatement pstmtAuthor = conn.prepareStatement("INSERT INTO Book_Genres (Book_Id, Genre_Id)   VALUES(?,?)");
-            pstmtAuthor.setInt(1, fictionBook.getIndex());
+            pstmtAuthor.setInt(1, fictionBook.getIndex()+1);
             pstmtAuthor.setString(2, genre);
             pstmtAuthor.executeUpdate();
         }
     }
 
 
-    public List<FictionBook> readAllBook() {
+    public void readAllBook() {
         String sqlSelectAllBook = "SELECT * FROM Books";
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement pstmtBook = conn.createStatement();
-             Statement pstmtAuthors = conn.createStatement()) {
+             Statement pstmtAuthors = conn.createStatement();
+             Statement pstmtImages = conn.createStatement()) {
             if (conn != null) {
                 ResultSet resultSet = pstmtBook.executeQuery(sqlSelectAllBook);
                 while (resultSet.next()){
@@ -232,12 +234,26 @@ public class Database {
                     int idBook = resultSet.getInt("id");
                     String sqlSelectAuthorsBook = "SELECT a.Name, a.MiddleName, a.LastName, a.Nickname, a.uuid, a.email\n" +
                             "FROM Author a\n" +
-                            "JOIN Book_Author ba ON a.id = ba.Author_Id\n" +
+                            "JOIN Book_Author ba ON a.uuid = ba.Author_Id\n" +
                             "JOIN Books b ON b.id = ba.Book_Id\n" +
-                            "WHERE b.id = " + idBook ;
-                    ResultSet resultSetAuthor = pstmtBook.executeQuery(sqlSelectAuthorsBook);
-                    while (resultSet.next()){
-
+                            "WHERE b.id = " + idBook;
+                    ResultSet resultSetAuthor = pstmtAuthors.executeQuery(sqlSelectAuthorsBook);
+                    while (resultSetAuthor.next()){
+                        Author author = new Author();
+                        author.setFirstName( resultSetAuthor.getString("Name"));
+                        author.setMidleNamte( resultSetAuthor.getString("MiddleName"));
+                        author.setLastName(resultSetAuthor.getString("LastName"));
+                        author.setUUID(UUID.fromString(resultSetAuthor.getString("uuid")));
+                        author.setEmail(resultSetAuthor.getString("email")) ;
+                        fictionBook.getDescription().getTitleInfo().setAuthors(author);
+                    }
+                    String sqlSelectImages = "SELECT Images.Title AS Image_Title, Images.Path AS Image_Path\n" +
+                            "FROM Images\n" +
+                            "JOIN Books ON Books.id = Images.id\n" +
+                            "WHERE Books.id = " + idBook + ";\n";
+                    ResultSet resultSetImages = pstmtImages.executeQuery(sqlSelectImages);
+                    while (resultSetImages.next()){
+                        fictionBook.setBinary(resultSetImages.getString("Image_Title") ,resultSetImages.getString("Image_Path") );
                     }
                     fictionBook.setIndex(resultSet.getInt("id"));
                     fictionBook.getDescription().getTitleInfo().setLang(resultSet.getString("Language"));
@@ -253,7 +269,6 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
     }
 
     public void createDataBase() {

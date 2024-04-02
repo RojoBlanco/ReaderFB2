@@ -5,7 +5,6 @@ import java.util.List;
 
 
 public class Annotation {
-    private StringBuilder result = new StringBuilder();
     private List<String> p;
     public Annotation(){
         p = new ArrayList<>();
@@ -25,9 +24,11 @@ public class Annotation {
 
     @Override
     public String toString() {
+        StringBuilder sb = new StringBuilder();
         for(String p1 : p){
-            result.append(p1 + "\n");
+           sb.append(p1).append("\n");
         }
-        return result.toString();
+        String result = sb.toString();
+        return result;
     }
 }

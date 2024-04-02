@@ -35,8 +35,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws URISyntaxException {
-        new Thread(this::createMainDirs).start();
-
+        Thread readDbThread = new Thread(this::createMainDirs);
+        readDbThread.start();
         primarStage = primaryStage;
         flowPane = new FlowPane();
 
@@ -68,7 +68,10 @@ public class Main extends Application {
         Scene scene = new Scene(borderPane, 1280, 920);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Библиотека");
+
         primaryStage.show();
+        if(!fictionBookList.isEmpty())
+            addNewBookObject();
     }
     private void createMainDirs(){
         folderPath = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
@@ -85,7 +88,14 @@ public class Main extends Application {
             db.createDataBase();
         }
         else {
-            db.readAllBook();
+            Thread thread = new Thread(db::readAllBook);
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
         }
         System.out.println("Папка уже создана" + tempDirectory.getPath() + " " + !tempDirectory.mkdir());
 
@@ -117,12 +127,14 @@ public class Main extends Application {
         }
         if(handler.isAdd){
         fictionBookList.get(fictionBookList.size() - 1).setPath(path);
-        flowPane.getChildren().add(new BookObject(fictionBookList.get(fictionBookList.size() - 1 ).getName(),
-        fictionBookList.get(fictionBookList.size() - 1 ).getCoverPath()));
+            addNewBookObject();
         new Thread(() -> db.addNewBook(fictionBookList.get(fictionBookList.size() - 1))).start();
         }
     }
-
+    private void addNewBookObject(){
+        flowPane.getChildren().add(new BookObject(fictionBookList.get(fictionBookList.size() - 1 ).getName(),
+                fictionBookList.get(fictionBookList.size() - 1 ).getCoverPath()));
+    }
     public static Stage getPrimaryStage(){
         return primarStage;
     }
