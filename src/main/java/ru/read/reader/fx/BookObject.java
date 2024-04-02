@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -60,14 +61,16 @@ public class BookObject extends VBox {
         cover1.setFitHeight(350);
         cover1.setFitWidth(350);
         // Создаем контент для нового окна
-        DescriptionObject descriptionObject = new DescriptionObject("Название", thisBook.getName());
+        DescriptionObject descriptionObject = new DescriptionObject("Название");
+        descriptionObject.addToTextFlow(new Text(thisBook.getName()));
+
+        DescriptionObject descriptionObject2 = new DescriptionObject("Автор");
         for (Author author: thisBook.getDesc().getTitleInfo().getAuthors()){
-            authors += author.toString() + " ";
-            System.out.println();
+            descriptionObject2.addToTextFlow(new Text(author.toString() + " "));
         }
-        DescriptionObject descriptionObject2 = new DescriptionObject("Автор",authors);
         var annotation = thisBook.getDesc().getTitleInfo().getAnnotation().toString();
-        DescriptionObject descriptionObject3 = new DescriptionObject("Описание",annotation);
+        DescriptionObject descriptionObject3 = new DescriptionObject("Описание");
+        descriptionObject3.addToTextFlow(new Text(annotation));
 
         Button btn = new Button();
         btn.setText("Открыть книгу");
