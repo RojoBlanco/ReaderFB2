@@ -48,8 +48,7 @@ public class Database {
                 + ");";
 
         String sqlGenres = "CREATE TABLE IF NOT EXISTS Genres (\n"
-                + "    id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-                + "    Genre TEXT NOT NULL UNIQUE\n"
+                + "    Genre TEXT PRIMARY KEY\n"
                 + ");";
 
         String sqlSeries = "CREATE TABLE IF NOT EXISTS Series (\n"
@@ -77,7 +76,7 @@ public class Database {
 
         String sqlBookGenres = "CREATE TABLE IF NOT EXISTS Book_Genres (\n"
                 + "    Book_Id INTEGER NOT NULL,\n"
-                + "    Genre_Id INTEGER NOT NULL,\n"
+                + "    Genre_Id TEXT NOT NULL,\n"
                 + "    PRIMARY KEY (Book_Id, Genre_Id),\n"
                 + "    FOREIGN KEY (Book_Id) REFERENCES Books(id),\n"
                 + "    FOREIGN KEY (Genre_Id) REFERENCES Genres(id)\n"
@@ -150,14 +149,17 @@ public class Database {
         String sqlBookAdd = "INSERT INTO Books (Path,Title ,Date_Written, Language, Annotation)   VALUES(?,?,?,?,?)";
         String sqlImageAdd = "INSERT INTO Images (Path, Title)   VALUES(?,?)";
         String sqlAuthorsAdd = "INSERT INTO Author (Name, MiddleName, LastName, Nickname , uuid)   VALUES(?,?,?,?,?)";
+        String sqlGenreAdd = "INSERT INTO Genres (Genre)   VALUES(?)";
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmtBook = conn.prepareStatement(sqlBookAdd);
              PreparedStatement pstmtImage = conn.prepareStatement(sqlImageAdd);
-             PreparedStatement pstmtAuthor = conn.prepareStatement(sqlAuthorsAdd);) {
+             PreparedStatement pstmtAuthor = conn.prepareStatement(sqlAuthorsAdd);
+             PreparedStatement pstmtGenre = conn.prepareStatement(sqlAuthorsAdd);) {
             if (conn != null) {
                 insertBook(ficbook, pstmtBook);
                 insertImage(ficbook, pstmtImage);
                 insertAuthor(ficbook, pstmtAuthor, conn);
+                insertGenre(ficbook, pstmtGenre, conn);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -182,7 +184,6 @@ public class Database {
     }
 
     private void insertAuthor(FictionBook fictionBook, PreparedStatement pstmt, Connection conn) throws SQLException {
-
         for (Author author : fictionBook.getDescription().getTitleInfo().getAuthors()) {
             String sqlSelectAuthor = "SELECT uuid FROM Author WHERE uuid = '" + author.getId().toString() + "'";
             Statement statement = conn.createStatement();
@@ -201,21 +202,52 @@ public class Database {
             pstmtAuthor.executeUpdate();
         }
     }
+    private void insertGenre(FictionBook fictionBook, PreparedStatement pstmt, Connection conn) throws SQLException {
+
+        for (String genre : fictionBook.getDescription().getTitleInfo().getGenres()) {
+            String sqlSelectAuthor = "SELECT Genre FROM Genres where Genre = '" + genre + "'";
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlSelectAuthor);
+            if (!resultSet.next()) {
+                pstmt.setString(1, genre);
+                pstmt.executeUpdate();
+            }
+            PreparedStatement pstmtAuthor = conn.prepareStatement("INSERT INTO Book_Genres (Book_Id, Genre_Id)   VALUES(?,?)");
+            pstmtAuthor.setInt(1, fictionBook.getIndex());
+            pstmtAuthor.setString(2, genre);
+            pstmtAuthor.executeUpdate();
+        }
+    }
+
 
     public List<FictionBook> readAllBook() {
         String sqlSelectAllBook = "SELECT * FROM Books";
         try (Connection conn = DriverManager.getConnection(DB_URL);
-             Statement pstmtBook = conn.createStatement()) {
+             Statement pstmtBook = conn.createStatement();
+             Statement pstmtAuthors = conn.createStatement()) {
             if (conn != null) {
                 ResultSet resultSet = pstmtBook.executeQuery(sqlSelectAllBook);
                 while (resultSet.next()){
                     FictionBook fictionBook = new FictionBook();
+                    int idBook = resultSet.getInt("id");
+                    String sqlSelectAuthorsBook = "SELECT a.Name, a.MiddleName, a.LastName, a.Nickname, a.uuid, a.email\n" +
+                            "FROM Author a\n" +
+                            "JOIN Book_Author ba ON a.id = ba.Author_Id\n" +
+                            "JOIN Books b ON b.id = ba.Book_Id\n" +
+                            "WHERE b.id = " + idBook ;
+                    ResultSet resultSetAuthor = pstmtBook.executeQuery(sqlSelectAuthorsBook);
+                    while (resultSet.next()){
+
+                    }
                     fictionBook.setIndex(resultSet.getInt("id"));
                     fictionBook.getDescription().getTitleInfo().setLang(resultSet.getString("Language"));
                     fictionBook.getDescription().getTitleInfo().setBookTitle(resultSet.getString("Title"));
                     fictionBook.getDescription().getTitleInfo().setAnnotation(new Annotation(resultSet.getString("Annotation")));
                     fictionBook.getDescription().getTitleInfo().setDate(resultSet.getString("Date_Written"));
                     fictionBook.setPath(resultSet.getString("Path"));
+
+
+                    Main.fictionBookList.add(fictionBook);
                 }
             }
         } catch (SQLException e) {
