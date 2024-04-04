@@ -41,9 +41,10 @@ public class Database {
                 + ");";
 
         String sqlImages = "CREATE TABLE IF NOT EXISTS Images (\n"
-                + "    id INTEGER ,\n"
-                + "    Title TEXT PRIMARY KEY NOT NULL,\n"
+                + "    id INTEGER  NOT NULL,\n"
+                + "    Title TEXT  NOT NULL,\n"
                 + "    Path TEXT NOT NULL,\n"
+                + "    PRIMARY KEY (id, Title),\n"
                 + "    FOREIGN KEY (id) REFERENCES Books(id)\n"
                 + ");";
 

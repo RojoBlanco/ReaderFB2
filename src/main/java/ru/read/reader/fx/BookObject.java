@@ -28,8 +28,9 @@ public class BookObject extends VBox {
     private ImageView cover;
     private Image img;
     private Label name;
-    private FictionBook thisBook = Main.fictionBookList.get(this.id);
+    private FictionBook thisBook;
     public BookObject(String name, String path){
+        thisBook = Main.fictionBookList.get(idCounter);
         id = idCounter++;
         this.name = new Label(name);
         img = new Image("file:"+ path);

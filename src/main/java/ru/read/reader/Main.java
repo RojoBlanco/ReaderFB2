@@ -71,7 +71,8 @@ public class Main extends Application {
 
         primaryStage.show();
         if(!fictionBookList.isEmpty())
-            addNewBookObject();
+            for (FictionBook fb: fictionBookList)
+                addNewBookObject(fb);
     }
     private void createMainDirs(){
         folderPath = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
@@ -127,13 +128,13 @@ public class Main extends Application {
         }
         if(handler.isAdd){
         fictionBookList.get(fictionBookList.size() - 1).setPath(path);
-            addNewBookObject();
+            addNewBookObject(fictionBookList.get(fictionBookList.size() - 1));
         new Thread(() -> db.addNewBook(fictionBookList.get(fictionBookList.size() - 1))).start();
         }
     }
-    private void addNewBookObject(){
-        flowPane.getChildren().add(new BookObject(fictionBookList.get(fictionBookList.size() - 1 ).getName(),
-                fictionBookList.get(fictionBookList.size() - 1 ).getCoverPath()));
+    private void addNewBookObject(FictionBook fb){
+        flowPane.getChildren().add(new BookObject(fb.getName(),
+               fb.getCoverPath()));
     }
     public static Stage getPrimaryStage(){
         return primarStage;
