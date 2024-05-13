@@ -26,7 +26,7 @@ public class Annotation {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for(String p1 : p){
-           sb.append(p1).append("\n");
+           sb.append(p1);
         }
         String result = sb.toString();
         return result;

@@ -19,7 +19,11 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.3.13</version> <!-- Версия зависимости -->
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
@@ -50,7 +54,6 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.42.0.0</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.openjfx</groupId>

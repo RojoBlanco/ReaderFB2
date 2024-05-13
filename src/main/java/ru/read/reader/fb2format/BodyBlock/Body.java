@@ -1,17 +1,19 @@
 package ru.read.reader.fb2format.BodyBlock;
 
+import ru.read.reader.fb2format.Image;
+
+import java.util.*;
+
 public class Body {
+	private Image image;
+	private Title title;
+	private List<Epigraph> epigraphs;
 
+	private List<Section> sections;
 	public Body(){
-
+		sections = new ArrayList<>();
 	}
-	private String textBook;
-
-	public String getTextBook() {
-		return textBook;
-	}
-
-	public void setTextBook(String textBook) {
-		this.textBook = textBook;
+	public void addToSections(Section section){
+		sections.add(section);
 	}
 }

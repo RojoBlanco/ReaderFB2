@@ -22,6 +22,7 @@ import java.io.IOException;
 
 public class Reader {
     private Stage primaryStage;
+    public static Body body;
     public void display(String filePath) throws IOException, ParserConfigurationException, SAXException {
         Stage primaryStage = new Stage();
         primaryStage.setTitle("FB2 Reader");
@@ -50,11 +51,6 @@ public class Reader {
              String selectedFontSize = fontSizeComboBox.getValue();
              applyFontSize(webView, selectedFontSize);
          });
-
-
-         String htmlContent = "<html>" + Main.fictionBookList.get(BookObject.getNowBook()).getListBody().get(0).getTextBook() + "</html>";
-
-         webView.getEngine().loadContent(htmlContent);
 
          BorderPane root = new BorderPane();
          root.setTop(fontSizeComboBox); // Устанавливаем ComboBox в верхнюю часть макета

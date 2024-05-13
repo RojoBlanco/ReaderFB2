@@ -7,7 +7,7 @@ import ru.read.reader.fb2format.BodyBlock.Body;
 import ru.read.reader.fb2format.FictionBook;
 import ru.read.reader.fb2format.Image;
 import ru.read.reader.Main;
-import ru.read.reader.fx.BookObject;
+import ru.read.reader.fx.*;
 
 public class ReadHandler
         extends DefaultHandler {
@@ -35,8 +35,7 @@ public class ReadHandler
 
     @Override
     public void endDocument() throws SAXException {
-        body.setTextBook(bodyText.toString());
-        fictionBook.addBody(body);
+        Reader.body = body;
     }
 
     @Override
@@ -48,10 +47,7 @@ public class ReadHandler
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
-        if(isMainText) {
-            bodyText.append("<" + lastAtribute +">" +new String(ch, start, length) + " </" + lastAtribute +">");
 
-        }
     }
 
 
